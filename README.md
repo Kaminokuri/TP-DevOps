@@ -1,5 +1,13 @@
 # TP DevOps - Pipeline GitOps locale securisee
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Rocky%20Linux-10.x-10b981?style=for-the-badge&logo=rockylinux&logoColor=white" alt="Rocky Linux 10.x">
+  <img src="https://img.shields.io/badge/Terraform-IaC-7c3aed?style=for-the-badge&logo=terraform&logoColor=white" alt="Terraform">
+  <img src="https://img.shields.io/badge/Ansible-Automation-ee0000?style=for-the-badge&logo=ansible&logoColor=white" alt="Ansible">
+  <img src="https://img.shields.io/badge/Docker-Containers-2496ed?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/github/actions/workflow/status/Kaminokuri/TP-DevOps/ci.yml?branch=main&style=for-the-badge&label=CI" alt="CI GitHub Actions">
+</p>
+
 Projet complet de TP DevOps pour Rocky Linux autour d'une pipeline GitOps locale avec Terraform, Ansible, Jenkins, Prometheus, Grafana, Checkov et Trivy.
 
 Ce depot est maintenant :
