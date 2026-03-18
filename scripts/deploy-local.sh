@@ -7,6 +7,8 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p "${ROOT_DIR}/jenkins_home"
 mkdir -p "${ROOT_DIR}/reports/security"
 
+"${ROOT_DIR}/scripts/install-terraform-provider-mirror.sh"
+export TF_CLI_CONFIG_FILE="${ROOT_DIR}/terraform.rc"
 terraform -chdir="${ROOT_DIR}/infrastructure/terraform" init
 terraform -chdir="${ROOT_DIR}/infrastructure/terraform" apply -auto-approve
 
@@ -16,4 +18,3 @@ ansible-playbook -i "${ROOT_DIR}/configuration/ansible/inventory.yml" "${ROOT_DI
 "${ROOT_DIR}/scripts/setup-jenkins.sh"
 
 echo "Deployment complete."
-

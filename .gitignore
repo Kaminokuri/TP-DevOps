@@ -1,7 +1,6 @@
 *.tfstate
 *.tfstate.*
 .terraform/
-.terraform.lock.hcl
 *.retry
 .vault_pass
 secrets/
@@ -13,4 +12,5 @@ __pycache__/
 reports/
 node_modules/
 jenkins_home/
-
+terraform.d/plugins/
+terraform.rc

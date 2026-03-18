@@ -78,7 +78,8 @@ Ce script installe :
 - Ansible Core
 - Checkov
 - Trivy
-- la collection `community.docker`
+- un miroir local du provider Terraform Docker pour contourner les acces limites a `registry.terraform.io`
+- un fichier `terraform.rc` genere localement pour forcer Terraform a utiliser ce miroir
 
 ## Demarrage rapide
 
@@ -223,6 +224,6 @@ ansible-playbook -i configuration/ansible/inventory.yml configuration/ansible/pl
 
 - Docker Engine : https://docs.docker.com/engine/
 - Terraform : https://developer.hashicorp.com/terraform
+- Terraform CLI config et miroirs providers : https://developer.hashicorp.com/terraform/cli/config/config-file
 - Ansible Core : https://docs.ansible.com/projects/ansible-core/
 - Trivy : https://trivy.dev/
-

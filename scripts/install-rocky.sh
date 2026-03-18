@@ -26,6 +26,7 @@ ${SUDO} curl -fsSL https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo -o /et
 
 echo "[5/7] Installing Terraform and Ansible..."
 ${SUDO} dnf install -y terraform ansible-core
+"${ROOT_DIR}/scripts/install-terraform-provider-mirror.sh"
 
 echo "[6/7] Installing Checkov..."
 ${SUDO} python3 -m venv "${TOOLS_VENV}"

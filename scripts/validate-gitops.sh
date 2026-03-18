@@ -20,6 +20,8 @@ fi
 
 if command -v terraform >/dev/null 2>&1; then
   echo "2. Validating Terraform..."
+  "${ROOT_DIR}/scripts/install-terraform-provider-mirror.sh"
+  export TF_CLI_CONFIG_FILE="${ROOT_DIR}/terraform.rc"
   terraform -chdir="${ROOT_DIR}/infrastructure/terraform" fmt -check -recursive
   terraform -chdir="${ROOT_DIR}/infrastructure/terraform" init -backend=false
   terraform -chdir="${ROOT_DIR}/infrastructure/terraform" validate
@@ -46,4 +48,3 @@ else
 fi
 
 echo "=== Validation Complete ==="
-

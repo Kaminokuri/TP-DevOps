@@ -38,19 +38,19 @@
         mode: "0644"
       notify: Restart Grafana
 
-    - name: Collect Docker container information
-      community.docker.docker_container_info:
-        name: "{{ item }}"
+    - name: Inspect Docker containers
+      ansible.builtin.command: docker inspect {{ item }}
       loop: "{{ monitored_containers }}"
       register: docker_status
+      changed_when: false
       failed_when: false
 
     - name: Display Docker container states
       ansible.builtin.debug:
         msg: >-
           {{ item.item }} => {{
-            (item.exists | default(false))
-            | ternary(item.container.State.Status, 'missing')
+            ((item.rc | default(1)) == 0 and ((item.stdout | from_json | length) > 0))
+            | ternary((item.stdout | from_json | first).State.Status, 'missing')
           }}
       loop: "{{ docker_status.results }}"
 
@@ -112,4 +112,3 @@
       ansible.builtin.command: docker restart grafana
       changed_when: true
       failed_when: false
-

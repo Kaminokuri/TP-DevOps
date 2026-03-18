@@ -103,6 +103,8 @@ pipeline {
       steps {
         sh '''
           set -eux
+          ./scripts/install-terraform-provider-mirror.sh
+          export TF_CLI_CONFIG_FILE="$WORKSPACE/terraform.rc"
           terraform -chdir=infrastructure/terraform init
           terraform -chdir=infrastructure/terraform fmt -check
           terraform -chdir=infrastructure/terraform validate
@@ -157,4 +159,3 @@ pipeline {
     }
   }
 }
-
