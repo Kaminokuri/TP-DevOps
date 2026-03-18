@@ -1,0 +1,115 @@
+---
+- name: Configure local GitOps monitoring stack
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    project_root: "{{ playbook_dir }}/../.."
+    monitored_containers:
+      - prometheus
+      - grafana
+      - jenkins
+      - monitoring-app
+
+  tasks:
+    - name: Ensure project directories exist
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - "{{ project_root }}/jenkins_home"
+        - "{{ project_root }}/monitoring/prometheus/rules"
+        - "{{ project_root }}/monitoring/grafana/provisioning/datasources"
+        - "{{ project_root }}/monitoring/grafana/provisioning/dashboards"
+        - "{{ project_root }}/monitoring/grafana/dashboards"
+
+    - name: Render Prometheus configuration
+      ansible.builtin.template:
+        src: templates/prometheus.yml.j2
+        dest: "{{ project_root }}/monitoring/prometheus/prometheus.yml"
+        mode: "0644"
+      notify: Restart Prometheus
+
+    - name: Render Grafana datasource configuration
+      ansible.builtin.template:
+        src: templates/datasources.yml.j2
+        dest: "{{ project_root }}/monitoring/grafana/provisioning/datasources/datasources.yml"
+        mode: "0644"
+      notify: Restart Grafana
+
+    - name: Collect Docker container information
+      community.docker.docker_container_info:
+        name: "{{ item }}"
+      loop: "{{ monitored_containers }}"
+      register: docker_status
+      failed_when: false
+
+    - name: Display Docker container states
+      ansible.builtin.debug:
+        msg: >-
+          {{ item.item }} => {{
+            (item.exists | default(false))
+            | ternary(item.container.State.Status, 'missing')
+          }}
+      loop: "{{ docker_status.results }}"
+
+    - name: Wait for Prometheus
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 9090
+        timeout: 120
+
+    - name: Wait for Grafana
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 3000
+        timeout: 120
+
+    - name: Wait for Jenkins
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 8080
+        timeout: 180
+
+    - name: Wait for demo application
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 3001
+        timeout: 120
+
+    - name: Verify Prometheus health endpoint
+      ansible.builtin.uri:
+        url: http://localhost:9090/-/healthy
+        return_content: true
+        status_code: 200
+
+    - name: Verify Grafana health endpoint
+      ansible.builtin.uri:
+        url: http://localhost:3000/api/health
+        return_content: true
+        status_code: 200
+
+    - name: Verify Jenkins login page
+      ansible.builtin.uri:
+        url: http://localhost:8080/login
+        return_content: false
+        status_code: 200
+
+    - name: Verify demo application health endpoint
+      ansible.builtin.uri:
+        url: http://localhost:3001/health
+        return_content: true
+        status_code: 200
+
+  handlers:
+    - name: Restart Prometheus
+      ansible.builtin.command: docker restart prometheus
+      changed_when: true
+      failed_when: false
+
+    - name: Restart Grafana
+      ansible.builtin.command: docker restart grafana
+      changed_when: true
+      failed_when: false
+

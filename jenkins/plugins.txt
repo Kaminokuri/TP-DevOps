@@ -1,0 +1,12 @@
+configuration-as-code
+credentials-binding
+docker-workflow
+git
+job-dsl
+junit
+mailer
+matrix-auth
+pipeline-stage-view
+prometheus
+workflow-aggregator
+

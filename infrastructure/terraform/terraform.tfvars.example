@@ -1,0 +1,8 @@
+environment            = "development"
+project_name           = "gitops-monitoring"
+monitoring_retention   = "15d"
+grafana_admin_user     = "admin"
+grafana_admin_password = "gitops2026"
+jenkins_admin_user     = "admin"
+jenkins_admin_password = "Admin123!2026"
+

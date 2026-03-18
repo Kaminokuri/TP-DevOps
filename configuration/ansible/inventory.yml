@@ -1,0 +1,22 @@
+all:
+  hosts:
+    localhost:
+      ansible_connection: local
+  children:
+    monitoring:
+      hosts:
+        prometheus:
+          container_name: prometheus
+          container_port: 9090
+        grafana:
+          container_name: grafana
+          container_port: 3000
+        monitoring_app:
+          container_name: monitoring-app
+          container_port: 3001
+    ci:
+      hosts:
+        jenkins:
+          container_name: jenkins
+          container_port: 8080
+

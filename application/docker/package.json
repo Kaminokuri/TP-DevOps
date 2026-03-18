@@ -1,0 +1,13 @@
+{
+  "name": "gitops-monitoring-app",
+  "version": "1.0.0",
+  "description": "Minimal monitoring demo app for the local GitOps pipeline",
+  "private": true,
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT"
+}
+

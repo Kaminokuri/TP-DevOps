@@ -1,0 +1,21 @@
+groups:
+  - name: gitops-local
+    rules:
+      - alert: TargetDown
+        expr: up == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "A monitored target is down"
+          description: "{{ $labels.instance }} is unreachable for more than 2 minutes."
+
+      - alert: MonitoringAppNoTraffic
+        expr: increase(gitops_app_requests_total[15m]) == 0
+        for: 15m
+        labels:
+          severity: info
+        annotations:
+          summary: "No traffic on monitoring app"
+          description: "The demo application did not receive traffic in the last 15 minutes."
+
