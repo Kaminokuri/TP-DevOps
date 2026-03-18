@@ -15,7 +15,7 @@ Ce depot est maintenant :
 - prepare pour Rocky Linux
 - deploye localement
 - publie sur GitHub
-- configure avec un auto-commit et auto-push
+- configure avec un systeme d'auto-commit et d'auto-push
 - documente avec les commandes et les actions realisees de A a Z
 
 ## Objectifs
@@ -23,7 +23,7 @@ Ce depot est maintenant :
 - Deployer une infrastructure locale avec Terraform
 - Configurer les services avec Ansible
 - Executer une pipeline CI/CD avec Jenkins
-- Integrer des controles de securite IaC et image
+- Integrer des controles de securite IaC et des scans d'images
 - Superviser la plateforme avec Prometheus et Grafana
 - Publier le projet sur GitHub avec un suivi automatique des changements
 
@@ -34,7 +34,7 @@ La stack deployee contient :
 - `prometheus` pour la collecte des metriques
 - `grafana` pour la visualisation
 - `jenkins` pour la pipeline CI/CD
-- `monitoring-app` comme application exemple conteneurisee
+- `monitoring-app` comme application d'exemple conteneurisee
 - un reseau Docker dedie et des volumes persistants
 
 ## Arborescence
@@ -86,13 +86,13 @@ sudo ./scripts/install-rocky.sh
 
 Ce script installe :
 
-- Git, Python, pip, make et utilitaires systeme
+- Git, Python, pip, make et des utilitaires systeme
 - Docker Engine et active le service
 - Terraform
 - Ansible Core
 - Checkov
 - Trivy
-- un miroir local du provider Terraform Docker pour contourner les acces limites a `registry.terraform.io`
+- un miroir local du provider Docker de Terraform pour contourner les acces limites a `registry.terraform.io`
 - un fichier `terraform.rc` genere localement pour forcer Terraform a utiliser ce miroir
 
 ## Demarrage Rapide
@@ -129,7 +129,7 @@ Le projet a ete realise dans cet ordre, du debut a la mise en ligne :
 3. Mise en place du miroir local du provider Docker Terraform avec `scripts/install-terraform-provider-mirror.sh`.
 4. Validation de la configuration avec `scripts/validate-gitops.sh`.
 5. Deploiement local avec `scripts/deploy-local.sh`.
-6. Provisionnement de Prometheus, Grafana, Jenkins et `monitoring-app` avec Terraform.
+6. Provisionnement de Prometheus, Grafana, Jenkins et de `monitoring-app` avec Terraform.
 7. Configuration de la plateforme avec Ansible.
 8. Verification de Jenkins avec `scripts/setup-jenkins.sh`.
 9. Execution des tests d'infrastructure Python avec `tests/test_infrastructure.py`.
@@ -137,7 +137,7 @@ Le projet a ete realise dans cet ordre, du debut a la mise en ligne :
 11. Correction de l'image Jenkins pour gerer correctement l'architecture et les dependances locales.
 12. Validation complete de la stack avec les tests d'infrastructure et la verification Jenkins.
 13. Publication du depot sur GitHub.
-14. Mise en place d'un auto-commit et auto-push sur chaque modification locale stable.
+14. Mise en place d'un systeme d'auto-commit et d'auto-push sur chaque modification locale stable.
 
 ## Commandes Utilisees De A a Z
 
@@ -192,7 +192,7 @@ curl http://localhost:8080/login
 curl http://localhost:3001/health
 ```
 
-### 5. Verification Terraform et etat de la stack
+### 5. Verification de Terraform et etat de la stack
 
 ```bash
 terraform -chdir=infrastructure/terraform state list
@@ -224,7 +224,7 @@ git push -u origin main
 
 ### 8. Auto-commit et auto-push
 
-Le depot est configure pour committer et pousser automatiquement les changements apres quelques secondes de stabilite.
+Le depot est configure pour commit et push automatiques apres quelques secondes de stabilite.
 
 Demarrer le service :
 
@@ -254,13 +254,13 @@ Fonctionnement :
 
 ## Corrections Et Ajustements Realises
 
-Les ajustements suivants ont ete necessaires pour obtenir une stack fonctionnelle localement :
+Les ajustements suivants ont ete necessaires pour obtenir une stack fonctionnelle en local :
 
-- adaptation du `jenkins/Dockerfile` pour gerer correctement l'architecture `arm64` et `amd64`
+- adaptation du `jenkins/Dockerfile` pour gerer correctement les architectures `arm64` et `amd64`
 - mise a jour de la version Trivy embarquee dans Jenkins vers `0.69.3`
 - remplacement de `docker-ce-cli` par `docker.io` dans l'image Jenkins pour eviter un blocage de signature APT sur Debian `trixie`
 - correction des permissions de `jenkins_home` au bootstrap et au deploiement
-- ajout d'un systeme local d'auto-commit et auto-push avec service `systemd`
+- ajout d'un systeme local d'auto-commit et d'auto-push avec un service `systemd`
 - configuration de l'identite Git locale pour utiliser le compte `Kaminokuri`
 
 ## Etat Final Du TP
@@ -302,10 +302,10 @@ Pour garder une trace simple, voici le scenario complet du TP :
 4. Verifier Terraform et Ansible.
 5. Deployer Prometheus, Grafana, Jenkins et l'application exemple.
 6. Verifier les conteneurs, les endpoints HTTP et les tests Python.
-7. Corriger les blocages Jenkins lies a l'architecture, a Trivy, a Docker CLI et aux permissions.
+7. Corriger les blocages Jenkins lies a l'architecture, a Trivy, a la CLI Docker et aux permissions.
 8. Verifier que Jenkins demarre et que le job `gitops-local-pipeline` est bien cree.
 9. Publier le depot sur GitHub.
-10. Activer l'auto-commit et auto-push via `systemd`.
+10. Activer l'auto-commit et l'auto-push via `systemd`.
 11. Configurer Git pour committer avec le compte `Kaminokuri`.
 
 ## Pipeline Jenkins
