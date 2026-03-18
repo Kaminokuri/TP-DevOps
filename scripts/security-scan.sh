@@ -37,7 +37,7 @@ fi
 
 if command -v trivy >/dev/null 2>&1; then
   echo -e "${YELLOW}[4/4] Scanning images with Trivy...${NC}"
-  for image in "gitops-monitoring-app:local" "cgr.dev/chainguard/prometheus:latest" "grafana/grafana:latest"; do
+  for image in "gitops-monitoring-app:local" "prom/prometheus:latest" "grafana/grafana:latest"; do
     safe_name="$(echo "${image}" | tr '/:' '__')"
     trivy image \
       --severity HIGH,CRITICAL \
@@ -59,4 +59,3 @@ if [[ "${critical_count}" -gt 0 ]]; then
 fi
 
 echo -e "${GREEN}No critical findings detected in generated reports.${NC}"
-

@@ -93,6 +93,5 @@ variable "terraform_version" {
 variable "trivy_version" {
   description = "Trivy version bundled in the Jenkins image"
   type        = string
-  default     = "0.50.2"
+  default     = "0.69.3"
 }
-

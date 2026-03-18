@@ -5,6 +5,7 @@ PROJECT_DIR := $(CURDIR)
 
 bootstrap:
 	mkdir -p $(PROJECT_DIR)/jenkins_home
+	chmod 0777 $(PROJECT_DIR)/jenkins_home
 	mkdir -p $(PROJECT_DIR)/reports/security
 	mkdir -p $(PROJECT_DIR)/monitoring/prometheus/rules
 	mkdir -p $(PROJECT_DIR)/monitoring/grafana/provisioning/datasources
@@ -33,4 +34,3 @@ destroy:
 
 setup-jenkins:
 	$(PROJECT_DIR)/scripts/setup-jenkins.sh
-

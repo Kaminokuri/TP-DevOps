@@ -5,6 +5,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 mkdir -p "${ROOT_DIR}/jenkins_home"
+chmod 0777 "${ROOT_DIR}/jenkins_home"
 mkdir -p "${ROOT_DIR}/reports/security"
 
 "${ROOT_DIR}/scripts/install-terraform-provider-mirror.sh"

@@ -1,0 +1,14 @@
+[Unit]
+Description=TP GitOps auto-commit watcher
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/tp-gitops-local
+ExecStart=/bin/bash /root/tp-gitops-local/scripts/autocommit-watch.sh
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

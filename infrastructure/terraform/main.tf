@@ -29,7 +29,7 @@ resource "docker_volume" "grafana_data" {
 }
 
 resource "docker_image" "prometheus" {
-  name         = "cgr.dev/chainguard/prometheus:latest"
+  name         = "prom/prometheus:latest"
   keep_locally = true
 }
 
@@ -68,7 +68,6 @@ resource "docker_container" "prometheus" {
   hostname = "prometheus"
   restart  = "unless-stopped"
   must_run = true
-  wait     = true
 
   networks_advanced {
     name = docker_network.monitoring.name
@@ -116,7 +115,6 @@ resource "docker_container" "grafana" {
   hostname = "grafana"
   restart  = "unless-stopped"
   must_run = true
-  wait     = true
 
   networks_advanced {
     name = docker_network.monitoring.name
@@ -171,7 +169,6 @@ resource "docker_container" "application" {
   hostname = "monitoring-app"
   restart  = "unless-stopped"
   must_run = true
-  wait     = true
 
   networks_advanced {
     name = docker_network.monitoring.name
@@ -198,7 +195,6 @@ resource "docker_container" "jenkins" {
   hostname = "jenkins"
   restart  = "unless-stopped"
   must_run = true
-  wait     = true
 
   networks_advanced {
     name = docker_network.monitoring.name
@@ -253,4 +249,3 @@ resource "docker_container" "jenkins" {
     value = "jenkins"
   }
 }
-

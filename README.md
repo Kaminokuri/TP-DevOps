@@ -81,6 +81,11 @@ Ce script installe :
 - un miroir local du provider Terraform Docker pour contourner les acces limites a `registry.terraform.io`
 - un fichier `terraform.rc` genere localement pour forcer Terraform a utiliser ce miroir
 
+Note d'execution locale :
+
+- pour garantir le deploiement sur cette machine Rocky Linux, les images runtime utilisees par defaut sont des images stables accessibles depuis Docker Hub
+- l'objectif pedagogique reste identique, meme si l'implementation n'utilise plus Chainguard pour l'application et Prometheus dans cette variante locale
+
 ## Demarrage rapide
 
 1. Initialiser le projet :
@@ -168,12 +173,24 @@ Stages du `Jenkinsfile` :
 Une fois les outils installes :
 
 ```bash
-git init
+git remote add origin <URL_DU_REPO_GITHUB>
 git branch -M main
 git add .
 git commit -m "Initial commit: GitOps local pipeline"
-git remote add origin <URL_DU_REPO_GITHUB>
-git push -u origin main
+./scripts/publish-github.sh
+```
+
+Le script `scripts/publish-github.sh` :
+
+- verifie que `origin` existe
+- avertit si l'arbre Git n'est pas propre
+- teste l'authentification GitHub avant le push
+- publie la branche courante avec `git push -u origin <branche>`
+
+Si vous utilisez SSH, pensez a ajouter la cle publique de la machine a GitHub avant le premier push :
+
+```bash
+cat ~/.ssh/github_tp_devops_ed25519.pub
 ```
 
 Le depot inclut deja :
