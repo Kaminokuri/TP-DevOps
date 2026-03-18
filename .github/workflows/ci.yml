@@ -39,7 +39,9 @@ jobs:
 
       - name: Terraform validate
         run: |
-          terraform -chdir=infrastructure/terraform providers lock -platform=linux_amd64
+          ./scripts/install-terraform-provider-mirror.sh
+          export TF_CLI_CONFIG_FILE="$GITHUB_WORKSPACE/terraform.rc"
+          rm -f infrastructure/terraform/.terraform.lock.hcl
           terraform -chdir=infrastructure/terraform init -backend=false
           terraform -chdir=infrastructure/terraform validate
 
