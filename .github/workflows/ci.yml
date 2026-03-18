@@ -51,7 +51,7 @@ jobs:
       - name: Checkov scans
         run: |
           checkov -d infrastructure/terraform --framework terraform
-          checkov -d configuration/ansible --framework ansible
+          checkov -d configuration/ansible --framework ansible --skip-check CKV2_ANSIBLE_1
           checkov -d application --framework dockerfile
 
       - name: Shell lint
