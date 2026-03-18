@@ -1,4 +1,4 @@
-# TP DevOps - Pipeline GitOps locale securisee
+# TP DevOps - Pipeline GitOps locale sécurisée
 
 <p align="center">
   <img src="https://img.shields.io/badge/Rocky%20Linux-10.x-10b981?style=for-the-badge&logo=rockylinux&logoColor=white" alt="Rocky Linux 10.x">
@@ -10,32 +10,32 @@
 
 Projet complet de TP DevOps pour Rocky Linux autour d'une pipeline GitOps locale avec Terraform, Ansible, Jenkins, Prometheus, Grafana, Checkov et Trivy.
 
-Ce depot est desormais :
+Ce dépôt est désormais :
 
-- prepare pour Rocky Linux
-- deploye localement
-- publie sur GitHub
-- configure avec un systeme d'auto-commit et d'auto-push
-- documente avec les commandes et les actions realisees de A a Z
+- préparé pour Rocky Linux
+- déployé localement
+- publié sur GitHub
+- configuré avec un système d'auto-commit et d'auto-push
+- documenté avec les commandes et les actions réalisées de A à Z
 
 ## Objectifs
 
-- Deployer une infrastructure locale avec Terraform
+- Déployer une infrastructure locale avec Terraform
 - Configurer les services avec Ansible
-- Executer une pipeline CI/CD avec Jenkins
-- Integrer des controles de securite IaC et des scans d'images
+- Exécuter une pipeline CI/CD avec Jenkins
+- Intégrer des contrôles de sécurité IaC et des scans d'images
 - Superviser la plateforme avec Prometheus et Grafana
 - Publier le projet sur GitHub avec un suivi automatique des changements
 
 ## Architecture
 
-La stack deployee contient :
+La stack déployée contient :
 
-- `prometheus` pour la collecte des metriques
+- `prometheus` pour la collecte des métriques
 - `grafana` pour la visualisation
 - `jenkins` pour la pipeline CI/CD
-- `monitoring-app` comme application d'exemple conteneurisee
-- un reseau Docker dedie et des volumes persistants
+- `monitoring-app` comme application d'exemple conteneurisée
+- un réseau Docker dédié et des volumes persistants
 
 ## Arborescence
 
@@ -55,13 +55,13 @@ tp-gitops-local/
 └── tests/
 ```
 
-## Prerequis
+## Prérequis
 
 - Rocky Linux 10.x
 - 4 vCPU minimum
 - 8 Go de RAM minimum
 - 20 Go d'espace disque
-- un acces administrateur sur la machine
+- un accès administrateur sur la machine
 
 Outils attendus :
 
@@ -77,7 +77,7 @@ Outils attendus :
 
 ## Installation sur Rocky Linux
 
-Le depot fournit un script d'installation :
+Le dépôt fournit un script d'installation :
 
 ```bash
 chmod +x scripts/install-rocky.sh
@@ -86,16 +86,16 @@ sudo ./scripts/install-rocky.sh
 
 Ce script installe :
 
-- Git, Python, pip, make et des utilitaires systeme
+- Git, Python, pip, make et des utilitaires système
 - Docker Engine et active le service
 - Terraform
 - Ansible Core
 - Checkov
 - Trivy
-- un miroir local du provider Docker de Terraform pour contourner les acces limites a `registry.terraform.io`
-- un fichier `terraform.rc` genere localement pour forcer Terraform a utiliser ce miroir
+- un miroir local du provider Docker de Terraform pour contourner les accès limités à `registry.terraform.io`
+- un fichier `terraform.rc` généré localement pour forcer Terraform à utiliser ce miroir
 
-## Demarrage rapide
+## Démarrage rapide
 
 ```bash
 make bootstrap
@@ -106,44 +106,44 @@ make setup-jenkins
 make test
 ```
 
-## URL par defaut
+## URL par défaut
 
 - Prometheus : `http://localhost:9090`
 - Grafana : `http://localhost:3000`
 - Jenkins : `http://localhost:8080`
 - Application exemple : `http://localhost:3001`
 
-Identifiants par defaut :
+Identifiants par défaut :
 
 - Grafana : `admin / gitops2026`
 - Jenkins : `admin / Admin123!2026`
 
-Pensez a modifier ces secrets dans `infrastructure/terraform/terraform.tfvars`.
+Pensez à modifier ces secrets dans `infrastructure/terraform/terraform.tfvars`.
 
-## Ce Qui A Ete Fait De A a Z
+## Ce Qui A Été Fait De A à Z
 
-Le projet a ete realise dans cet ordre, du demarrage a la mise en ligne :
+Le projet a été réalisé dans cet ordre, du démarrage à la mise en ligne :
 
-1. Installation des prerequis Rocky Linux avec `scripts/install-rocky.sh`.
-2. Preparation du depot avec `make bootstrap`.
+1. Installation des prérequis Rocky Linux avec `scripts/install-rocky.sh`.
+2. Préparation du dépôt avec `make bootstrap`.
 3. Mise en place du miroir local du provider Docker Terraform avec `scripts/install-terraform-provider-mirror.sh`.
 4. Validation de la configuration avec `scripts/validate-gitops.sh`.
-5. Deploiement local avec `scripts/deploy-local.sh`.
+5. Déploiement local avec `scripts/deploy-local.sh`.
 6. Provisionnement de Prometheus, Grafana, Jenkins et de `monitoring-app` avec Terraform.
 7. Configuration de la plateforme avec Ansible.
-8. Verification de Jenkins avec `scripts/setup-jenkins.sh`.
-9. Execution des tests d'infrastructure Python avec `tests/test_infrastructure.py`.
-10. Publication du depot sur GitHub via `scripts/publish-github.sh`.
-11. Correction de l'image Jenkins pour gerer correctement l'architecture et les dependances locales.
-12. Validation complete de la stack avec les tests d'infrastructure et la verification Jenkins.
-13. Publication du depot sur GitHub.
-14. Mise en place d'un systeme d'auto-commit et d'auto-push sur chaque modification locale stable.
+8. Vérification de Jenkins avec `scripts/setup-jenkins.sh`.
+9. Exécution des tests d'infrastructure Python avec `tests/test_infrastructure.py`.
+10. Publication du dépôt sur GitHub via `scripts/publish-github.sh`.
+11. Correction de l'image Jenkins pour gérer correctement l'architecture et les dépendances locales.
+12. Validation complète de la stack avec les tests d'infrastructure et la vérification Jenkins.
+13. Publication du dépôt sur GitHub.
+14. Mise en place d'un système d'auto-commit et d'auto-push sur chaque modification locale stable.
 
-## Commandes Utilisees De A a Z
+## Commandes Utilisées De A à Z
 
-Cette section resume les commandes importantes utilisees pendant le TP, dans l'ordre logique de realisation.
+Cette section résume les commandes importantes utilisées pendant le TP, dans l'ordre logique de réalisation.
 
-### 1. Installation et preparation de la machine
+### 1. Installation et préparation de la machine
 
 ```bash
 chmod +x scripts/install-rocky.sh
@@ -167,7 +167,7 @@ terraform -chdir=infrastructure/terraform validate
 ansible-playbook -i configuration/ansible/inventory.yml configuration/ansible/playbook.yml --syntax-check
 ```
 
-### 3. Deploiement local de la plateforme
+### 3. Déploiement local de la plateforme
 
 ```bash
 make deploy
@@ -179,7 +179,7 @@ ansible-playbook -i configuration/ansible/inventory.yml configuration/ansible/pl
 ./scripts/setup-jenkins.sh
 ```
 
-### 4. Verification de la plateforme apres deploiement
+### 4. Vérification de la plateforme après déploiement
 
 ```bash
 docker ps
@@ -192,7 +192,7 @@ curl http://localhost:8080/login
 curl http://localhost:3001/health
 ```
 
-### 5. Verification de Terraform et etat de la stack
+### 5. Vérification de Terraform et état de la stack
 
 ```bash
 terraform -chdir=infrastructure/terraform state list
@@ -224,15 +224,15 @@ git push -u origin main
 
 ### 8. Auto-commit et auto-push
 
-Le depot est configure pour effectuer des commits et des push automatiques apres quelques secondes de stabilite.
+Le dépôt est configuré pour effectuer des commits et des push automatiques après quelques secondes de stabilité.
 
-Demarrer le service :
+Démarrer le service :
 
 ```bash
 ./scripts/start-autocommit-watch.sh
 ```
 
-Arreter le service :
+Arrêter le service :
 
 ```bash
 ./scripts/stop-autocommit-watch.sh
@@ -246,26 +246,26 @@ tail -n 80 .git/autocommit-watch.log
 
 Fonctionnement :
 
-- le watcher surveille l'etat Git du depot
+- le watcher surveille l'état Git du dépôt
 - il attend `4` secondes sans nouvelle modification
 - il lance `git add -A`
-- il cree un commit automatique horodate
+- il crée un commit automatique horodaté
 - il pousse sur `origin/main`
 
-## Corrections Et Ajustements Realises
+## Corrections Et Ajustements Réalisés
 
-Les ajustements suivants ont ete necessaires pour obtenir une stack fonctionnelle en local :
+Les ajustements suivants ont été nécessaires pour obtenir une stack fonctionnelle en local :
 
-- adaptation du `jenkins/Dockerfile` pour gerer correctement les architectures `arm64` et `amd64`
-- mise a jour de la version Trivy embarquee dans Jenkins vers `0.69.3`
-- remplacement de `docker-ce-cli` par `docker.io` dans l'image Jenkins pour eviter un blocage de signature APT sur Debian `trixie`
+- adaptation du `jenkins/Dockerfile` pour gérer correctement les architectures `arm64` et `amd64`
+- mise à jour de la version Trivy embarquée dans Jenkins vers `0.69.3`
+- remplacement de `docker-ce-cli` par `docker.io` dans l'image Jenkins pour éviter un blocage de signature APT sur Debian `trixie`
 - correction des permissions de `jenkins_home` au bootstrap et au deploiement
-- ajout d'un systeme local d'auto-commit et d'auto-push avec un service `systemd`
-- configuration de l'identite Git locale pour utiliser le compte `Kaminokuri`
+- ajout d'un système local d'auto-commit et d'auto-push avec un service `systemd`
+- configuration de l'identité Git locale pour utiliser le compte `Kaminokuri`
 
-## Etat Final Du TP
+## État Final Du TP
 
-Etat actuellement valide :
+État actuellement validé :
 
 - infrastructure et integration : OK
 - Jenkins et pipeline locale : OK
@@ -273,15 +273,15 @@ Etat actuellement valide :
 - tests d'infrastructure Python : OK
 - publication GitHub : OK
 - auto-commit et auto-push : OK
-- identite Git locale `Kaminokuri` : OK
+- identité Git locale `Kaminokuri` : OK
 
-Point encore limite par l'environnement :
+Point encore limité par l'environnement :
 
-- `./scripts/security-scan.sh` lance bien les etapes Checkov
-- la partie Trivy echoue sur le telechargement de la base de vulnerabilites
-- cause observee : la resolution DNS est indisponible pour `mirror.gcr.io` sur cette machine
+- `./scripts/security-scan.sh` lance bien les étapes Checkov
+- la partie Trivy échoue sur le téléchargement de la base de vulnérabilités
+- cause observée : la résolution DNS est indisponible pour `mirror.gcr.io` sur cette machine
 
-Exemple d'erreur observee :
+Exemple d'erreur observée :
 
 ```text
 lookup mirror.gcr.io on 192.168.70.2:53: no such host
@@ -292,37 +292,37 @@ Conclusion :
 - le projet fonctionne de bout en bout pour le deploiement, Jenkins, les tests et GitHub
 - le blocage restant vient du reseau de l'environnement, pas de la logique Terraform, Ansible ou Jenkins
 
-## Resume Chronologique
+## Résumé Chronologique
 
-Pour garder une trace simple, voici le deroulement complet du TP :
+Pour garder une trace simple, voici le déroulement complet du TP :
 
 1. Installer les outils sur Rocky Linux.
-2. Initialiser le projet et les repertoires locaux.
+2. Initialiser le projet et les répertoires locaux.
 3. Configurer Terraform avec le miroir du provider Docker.
-4. Verifier Terraform et Ansible.
-5. Deployer Prometheus, Grafana, Jenkins et l'application exemple.
-6. Verifier les conteneurs, les endpoints HTTP et les tests Python.
-7. Corriger les blocages Jenkins lies a l'architecture, a Trivy, a l'interface en ligne de commande Docker et aux permissions.
-8. Verifier que Jenkins demarre et que le job `gitops-local-pipeline` est bien cree.
-9. Publier le depot sur GitHub.
+4. Vérifier Terraform et Ansible.
+5. Déployer Prometheus, Grafana, Jenkins et l'application exemple.
+6. Vérifier les conteneurs, les endpoints HTTP et les tests Python.
+7. Corriger les blocages Jenkins liés à l'architecture, à Trivy, à l'interface en ligne de commande Docker et aux permissions.
+8. Vérifier que Jenkins démarre et que le job `gitops-local-pipeline` est bien créé.
+9. Publier le dépôt sur GitHub.
 10. Activer l'auto-commit et l'auto-push via `systemd`.
 11. Configurer Git pour committer avec le compte `Kaminokuri`.
 
 ## Pipeline Jenkins
 
-Le job Jenkins est configure automatiquement via Configuration as Code.
+Le job Jenkins est configuré automatiquement via Configuration as Code.
 
 Stages du `Jenkinsfile` :
 
-1. recuperation du depot
-2. verification de la chaine d'outils
+1. récupération du dépôt
+2. vérification de la chaîne d'outils
 3. scan IaC avec Checkov
 4. construction de l'image applicative
 5. scan de l'image avec Trivy
-6. deploiement Terraform
+6. déploiement Terraform
 7. configuration Ansible
-8. verification de l'etat de sante des services
-9. tests d'integration Python
+8. vérification de l'état de santé des services
+9. tests d'intégration Python
 
 ## Commandes Utiles
 
@@ -342,9 +342,9 @@ make destroy
 ./scripts/stop-autocommit-watch.sh
 ```
 
-## Depannage
+## Dépannage
 
-Verifier les services :
+Vérifier les services :
 
 ```bash
 docker ps
@@ -354,7 +354,7 @@ docker logs jenkins
 docker logs monitoring-app
 ```
 
-Verifier Terraform :
+Vérifier Terraform :
 
 ```bash
 terraform -chdir=infrastructure/terraform init
@@ -368,13 +368,13 @@ Relancer la configuration :
 ansible-playbook -i configuration/ansible/inventory.yml configuration/ansible/playbook.yml
 ```
 
-Verifier Jenkins :
+Vérifier Jenkins :
 
 ```bash
 ./scripts/setup-jenkins.sh
 ```
 
-Verifier l'auto-push :
+Vérifier l'auto-push :
 
 ```bash
 systemctl status autocommit-watch.service
@@ -383,7 +383,7 @@ git log --oneline -5
 git config --local --get-regexp '^user\.(name|email)$'
 ```
 
-## References utiles
+## Références utiles
 
 - Docker Engine : https://docs.docker.com/engine/
 - Terraform : https://developer.hashicorp.com/terraform
