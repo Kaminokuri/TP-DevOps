@@ -2,7 +2,13 @@
 
 Projet complet de TP DevOps pour Rocky Linux autour d'une pipeline GitOps locale avec Terraform, Ansible, Jenkins, Prometheus, Grafana, Checkov et Trivy.
 
-Ce depot est maintenant prepare, deploye localement, publie sur GitHub et documente avec les commandes utilisees de A a Z.
+Ce depot est maintenant :
+
+- prepare pour Rocky Linux
+- deploye localement
+- publie sur GitHub
+- configure avec un auto-commit et auto-push
+- documente avec les commandes et les actions realisees de A a Z
 
 ## Objectifs
 
@@ -81,7 +87,7 @@ Ce script installe :
 - un miroir local du provider Terraform Docker pour contourner les acces limites a `registry.terraform.io`
 - un fichier `terraform.rc` genere localement pour forcer Terraform a utiliser ce miroir
 
-## Demarrage rapide
+## Demarrage Rapide
 
 ```bash
 make bootstrap
@@ -108,7 +114,7 @@ Pensez a modifier ces secrets dans `infrastructure/terraform/terraform.tfvars`.
 
 ## Ce Qui A Ete Fait De A a Z
 
-Le projet a ete realise dans cet ordre :
+Le projet a ete realise dans cet ordre, du debut a la mise en ligne :
 
 1. Installation des prerequis Rocky Linux avec `scripts/install-rocky.sh`.
 2. Preparation du depot avec `make bootstrap`.
@@ -120,11 +126,16 @@ Le projet a ete realise dans cet ordre :
 8. Verification de Jenkins avec `scripts/setup-jenkins.sh`.
 9. Execution des tests d'infrastructure Python avec `tests/test_infrastructure.py`.
 10. Publication du depot sur GitHub via `scripts/publish-github.sh`.
-11. Mise en place d'un auto-commit et auto-push sur chaque modification locale stable.
+11. Correction de l'image Jenkins pour gerer correctement l'architecture et les dependances locales.
+12. Validation complete de la stack avec les tests d'infrastructure et la verification Jenkins.
+13. Publication du depot sur GitHub.
+14. Mise en place d'un auto-commit et auto-push sur chaque modification locale stable.
 
 ## Commandes Utilisees De A a Z
 
-### 1. Installation et preparation
+Cette section resume les commandes importantes utilisees pendant le TP, dans l'ordre logique de realisation.
+
+### 1. Installation et preparation de la machine
 
 ```bash
 chmod +x scripts/install-rocky.sh
@@ -134,7 +145,7 @@ make bootstrap
 cp infrastructure/terraform/terraform.tfvars.example infrastructure/terraform/terraform.tfvars
 ```
 
-### 2. Validation de la configuration
+### 2. Validation initiale du projet
 
 ```bash
 make validate
@@ -148,7 +159,7 @@ terraform -chdir=infrastructure/terraform validate
 ansible-playbook -i configuration/ansible/inventory.yml configuration/ansible/playbook.yml --syntax-check
 ```
 
-### 3. Deploiement local
+### 3. Deploiement local de la plateforme
 
 ```bash
 make deploy
@@ -160,7 +171,7 @@ ansible-playbook -i configuration/ansible/inventory.yml configuration/ansible/pl
 ./scripts/setup-jenkins.sh
 ```
 
-### 4. Verification de la plateforme
+### 4. Verification de la plateforme apres deploiement
 
 ```bash
 docker ps
@@ -173,7 +184,26 @@ curl http://localhost:8080/login
 curl http://localhost:3001/health
 ```
 
-### 5. Publication sur GitHub
+### 5. Verification Terraform et etat de la stack
+
+```bash
+terraform -chdir=infrastructure/terraform state list
+terraform -chdir=infrastructure/terraform plan -no-color
+docker logs jenkins
+docker logs prometheus
+docker logs grafana
+docker logs monitoring-app
+```
+
+### 6. Tests et validation finale
+
+```bash
+python3 tests/test_infrastructure.py
+./scripts/setup-jenkins.sh
+./scripts/validate-gitops.sh
+```
+
+### 7. Publication sur GitHub
 
 ```bash
 git remote add origin git@github.com:Kaminokuri/TP-DevOps.git
@@ -181,9 +211,10 @@ git branch -M main
 git add .
 git commit -m "Initial commit: GitOps local pipeline"
 ./scripts/publish-github.sh
+git push -u origin main
 ```
 
-### 6. Auto-commit et auto-push
+### 8. Auto-commit et auto-push
 
 Le depot est configure pour committer et pousser automatiquement les changements apres quelques secondes de stabilite.
 
@@ -222,6 +253,7 @@ Les ajustements suivants ont ete necessaires pour obtenir une stack fonctionnell
 - remplacement de `docker-ce-cli` par `docker.io` dans l'image Jenkins pour eviter un blocage de signature APT sur Debian `trixie`
 - correction des permissions de `jenkins_home` au bootstrap et au deploiement
 - ajout d'un systeme local d'auto-commit et auto-push avec service `systemd`
+- configuration de l'identite Git locale pour utiliser le compte `Kaminokuri`
 
 ## Etat Final Du TP
 
@@ -233,11 +265,12 @@ Etat actuellement valide :
 - tests d'infrastructure Python : OK
 - publication GitHub : OK
 - auto-commit et auto-push : OK
+- identite Git locale `Kaminokuri` : OK
 
 Point encore limite par l'environnement :
 
 - `./scripts/security-scan.sh` lance bien les etapes Checkov
-- la partie Trivy echoue sur le telechargement de la base de vuln erabilites
+- la partie Trivy echoue sur le telechargement de la base de vulnerabilites
 - cause observee : resolution DNS indisponible pour `mirror.gcr.io` sur cette machine
 
 Exemple d'erreur observee :
@@ -250,6 +283,22 @@ Conclusion :
 
 - le projet fonctionne de bout en bout pour le deploiement, Jenkins, les tests et GitHub
 - le blocage restant vient du reseau de l'environnement, pas de la logique Terraform, Ansible ou Jenkins
+
+## Resume Chronologique
+
+Pour garder une trace simple, voici le scenario complet du TP :
+
+1. Installer les outils sur Rocky Linux.
+2. Initialiser le projet et les repertoires locaux.
+3. Configurer Terraform avec le miroir du provider Docker.
+4. Verifier Terraform et Ansible.
+5. Deployer Prometheus, Grafana, Jenkins et l'application exemple.
+6. Verifier les conteneurs, les endpoints HTTP et les tests Python.
+7. Corriger les blocages Jenkins lies a l'architecture, a Trivy, a Docker CLI et aux permissions.
+8. Verifier que Jenkins demarre et que le job `gitops-local-pipeline` est bien cree.
+9. Publier le depot sur GitHub.
+10. Activer l'auto-commit et auto-push via `systemd`.
+11. Configurer Git pour committer avec le compte `Kaminokuri`.
 
 ## Pipeline Jenkins
 
@@ -270,6 +319,9 @@ Stages du `Jenkinsfile` :
 ## Commandes Utiles
 
 ```bash
+make bootstrap
+make deploy
+make validate
 make security
 make test
 make destroy
@@ -278,6 +330,8 @@ make destroy
 ./scripts/security-scan.sh
 ./scripts/setup-jenkins.sh
 ./scripts/publish-github.sh
+./scripts/start-autocommit-watch.sh
+./scripts/stop-autocommit-watch.sh
 ```
 
 ## Depannage
@@ -318,6 +372,7 @@ Verifier l'auto-push :
 systemctl status autocommit-watch.service
 tail -n 80 .git/autocommit-watch.log
 git log --oneline -5
+git config --local --get-regexp '^user\.(name|email)$'
 ```
 
 ## References Utiles
