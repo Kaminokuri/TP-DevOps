@@ -39,6 +39,7 @@ jobs:
 
       - name: Terraform validate
         run: |
+          terraform -chdir=infrastructure/terraform providers lock -platform=linux_amd64
           terraform -chdir=infrastructure/terraform init -backend=false
           terraform -chdir=infrastructure/terraform validate
 
@@ -53,4 +54,3 @@ jobs:
 
       - name: Shell lint
         run: shellcheck scripts/*.sh
-
