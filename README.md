@@ -275,22 +275,12 @@ Les ajustements suivants ont été nécessaires pour obtenir une stack fonctionn
 - auto-commit et auto-push : OK
 - identité Git locale `Kaminokuri` : OK
 
-Point encore limité par l'environnement :
+Comportement du scan securite sur cette machine :
 
-- `./scripts/security-scan.sh` lance bien les étapes Checkov
-- la partie Trivy échoue sur le téléchargement de la base de vulnérabilités
-- cause observée : la résolution DNS est indisponible pour `mirror.gcr.io` sur cette machine
-
-Exemple d'erreur observée :
-
-```text
-lookup mirror.gcr.io on 192.168.70.2:53: no such host
-```
-
-Conclusion :
-
-- le projet fonctionne de bout en bout pour le deploiement, Jenkins, les tests et GitHub
-- le blocage restant vient du reseau de l'environnement, pas de la logique Terraform, Ansible ou Jenkins
+- `./scripts/security-scan.sh` execute Checkov localement
+- pour Trivy, le script tente d'abord le binaire local avec des depots DB explicites
+- si le binaire local echoue encore sur la resolution DNS OCI, le script bascule automatiquement sur le conteneur officiel `aquasec/trivy`
+- ce fallback force des DNS publics (`1.1.1.1` et `8.8.8.8`) pour contourner le blocage observe avec `mirror.gcr.io`
 
 ## Résumé Chronologique
 

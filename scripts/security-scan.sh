@@ -46,7 +46,7 @@ trivy_scan_container() {
     image \
     --image-src docker \
     --db-repository public.ecr.aws/aquasecurity/trivy-db:2 \
-    --db-repository ghcr.io/aquasec/trivy-db:2 \
+    --db-repository ghcr.io/aquasecurity/trivy-db:2 \
     --cache-dir /root/.cache/trivy \
     --severity HIGH,CRITICAL \
     --format json \
