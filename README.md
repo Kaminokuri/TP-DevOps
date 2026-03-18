@@ -390,3 +390,9 @@ git config --local --get-regexp '^user\.(name|email)$'
 - Terraform CLI config et miroirs providers : https://developer.hashicorp.com/terraform/cli/config/config-file
 - Ansible Core : https://docs.ansible.com/projects/ansible-core/
 - Trivy : https://trivy.dev/
+
+---
+
+**Auteur :** Mathéo Fauvel
+**GitHub :** [Kaminokuri](https://github.com/Kaminokuri)
+**Site du wiki :** [wiki.matheo-fauvel.fr](https://wiki.matheo-fauvel.fr)
