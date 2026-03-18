@@ -10,7 +10,7 @@
 
 Projet complet de TP DevOps pour Rocky Linux autour d'une pipeline GitOps locale avec Terraform, Ansible, Jenkins, Prometheus, Grafana, Checkov et Trivy.
 
-Ce depot est maintenant :
+Ce depot est desormais :
 
 - prepare pour Rocky Linux
 - deploye localement
@@ -61,7 +61,7 @@ tp-gitops-local/
 - 4 vCPU minimum
 - 8 Go de RAM minimum
 - 20 Go d'espace disque
-- acces administrateur sur la machine
+- un acces administrateur sur la machine
 
 Outils attendus :
 
@@ -95,7 +95,7 @@ Ce script installe :
 - un miroir local du provider Docker de Terraform pour contourner les acces limites a `registry.terraform.io`
 - un fichier `terraform.rc` genere localement pour forcer Terraform a utiliser ce miroir
 
-## Demarrage Rapide
+## Demarrage rapide
 
 ```bash
 make bootstrap
@@ -106,7 +106,7 @@ make setup-jenkins
 make test
 ```
 
-## URLs par defaut
+## URL par defaut
 
 - Prometheus : `http://localhost:9090`
 - Grafana : `http://localhost:3000`
@@ -122,7 +122,7 @@ Pensez a modifier ces secrets dans `infrastructure/terraform/terraform.tfvars`.
 
 ## Ce Qui A Ete Fait De A a Z
 
-Le projet a ete realise dans cet ordre, du debut a la mise en ligne :
+Le projet a ete realise dans cet ordre, du demarrage a la mise en ligne :
 
 1. Installation des prerequis Rocky Linux avec `scripts/install-rocky.sh`.
 2. Preparation du depot avec `make bootstrap`.
@@ -224,7 +224,7 @@ git push -u origin main
 
 ### 8. Auto-commit et auto-push
 
-Le depot est configure pour commit et push automatiques apres quelques secondes de stabilite.
+Le depot est configure pour effectuer des commits et des push automatiques apres quelques secondes de stabilite.
 
 Demarrer le service :
 
@@ -279,7 +279,7 @@ Point encore limite par l'environnement :
 
 - `./scripts/security-scan.sh` lance bien les etapes Checkov
 - la partie Trivy echoue sur le telechargement de la base de vulnerabilites
-- cause observee : resolution DNS indisponible pour `mirror.gcr.io` sur cette machine
+- cause observee : la resolution DNS est indisponible pour `mirror.gcr.io` sur cette machine
 
 Exemple d'erreur observee :
 
@@ -294,7 +294,7 @@ Conclusion :
 
 ## Resume Chronologique
 
-Pour garder une trace simple, voici le scenario complet du TP :
+Pour garder une trace simple, voici le deroulement complet du TP :
 
 1. Installer les outils sur Rocky Linux.
 2. Initialiser le projet et les repertoires locaux.
@@ -302,7 +302,7 @@ Pour garder une trace simple, voici le scenario complet du TP :
 4. Verifier Terraform et Ansible.
 5. Deployer Prometheus, Grafana, Jenkins et l'application exemple.
 6. Verifier les conteneurs, les endpoints HTTP et les tests Python.
-7. Corriger les blocages Jenkins lies a l'architecture, a Trivy, a la CLI Docker et aux permissions.
+7. Corriger les blocages Jenkins lies a l'architecture, a Trivy, a l'interface en ligne de commande Docker et aux permissions.
 8. Verifier que Jenkins demarre et que le job `gitops-local-pipeline` est bien cree.
 9. Publier le depot sur GitHub.
 10. Activer l'auto-commit et l'auto-push via `systemd`.
@@ -314,14 +314,14 @@ Le job Jenkins est configure automatiquement via Configuration as Code.
 
 Stages du `Jenkinsfile` :
 
-1. checkout du depot
-2. verification de la toolchain
+1. recuperation du depot
+2. verification de la chaine d'outils
 3. scan IaC avec Checkov
-4. build de l'image applicative
+4. construction de l'image applicative
 5. scan de l'image avec Trivy
 6. deploiement Terraform
 7. configuration Ansible
-8. health checks
+8. verification de l'etat de sante des services
 9. tests d'integration Python
 
 ## Commandes Utiles
@@ -362,7 +362,7 @@ terraform -chdir=infrastructure/terraform validate
 terraform -chdir=infrastructure/terraform plan
 ```
 
-Rejouer la configuration :
+Relancer la configuration :
 
 ```bash
 ansible-playbook -i configuration/ansible/inventory.yml configuration/ansible/playbook.yml
@@ -383,7 +383,7 @@ git log --oneline -5
 git config --local --get-regexp '^user\.(name|email)$'
 ```
 
-## References Utiles
+## References utiles
 
 - Docker Engine : https://docs.docker.com/engine/
 - Terraform : https://developer.hashicorp.com/terraform
